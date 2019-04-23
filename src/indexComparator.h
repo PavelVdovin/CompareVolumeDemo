@@ -21,7 +21,12 @@ public:
 	// Should return heuristic value between 0.0 and 1.0.
 	// 0.0 = content is equal.
 	// 1.0 = content is fully different.
-	virtual double compareContent(const FileIndexArithmetic& file1, const FileIndexArithmetic& file2) const = 0;
+	// maxDiff parameter may be used to skip comparing if files have too different sizes.
+	virtual double compareContent(
+		const FileIndexArithmetic& file1,
+		const FileIndexArithmetic& file2,
+		double maxDiff
+	) const = 0;
 
 	// Compare metadata only.
 	// Default implementation compares file names using LCS and calcs modification  dates abs diff.
@@ -36,9 +41,11 @@ public:
 	// Should return heuristic value between 0.0 and 1.0.
 	// 0.0 = content is equal.
 	// 1.0 = content is fully different.
+	// maxDiff parameter may be used to skip comparing if files have too different sizes.
 	virtual double compare(
 			const FileIndexArithmetic& file1,
 			const FileIndexArithmetic& file2,
+			double maxDiff,
 			const double preferContentRatio = 0.9
 	) const;
 };

@@ -6,4 +6,4 @@ include_directories (
 )
 
 add_executable (Test ${tests_SRC})
-target_link_libraries (Test CompareVolumeLib)
+target_link_libraries (Test CompareVolumeLib ${LMDB_LIBRARIES})

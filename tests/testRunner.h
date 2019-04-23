@@ -13,6 +13,9 @@
 
 #include "testIndex.h"
 #include "testCompareFiles.h"
+#include "testDB.h"
+#include "testVolumeCompare.h"
+#include "testSubfolder.h"
 
 using namespace std;
 
@@ -25,6 +28,9 @@ public:
 	TestRunner() {
 		m_tests.push_back(make_unique<TestIndex>());
 		m_tests.push_back(make_unique<TestCompareFiles>());
+		m_tests.push_back(make_unique<TestDB>());
+		m_tests.push_back(make_unique<TestVolumeCompare>());
+		m_tests.push_back(make_unique<TestSubfolder>());
 	}
 
 	void run();

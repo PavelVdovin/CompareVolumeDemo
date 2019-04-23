@@ -48,9 +48,9 @@ void TestCompareFiles::run() {
 	double ver12CompareCost, ver13CompareCost, ver23CompareCost;
 	LCSIndexComparator comparator;
 
-	ver12CompareCost = comparator.compareContent(fileIndexes[ver1Index], fileIndexes[ver2Index]);
-	ver13CompareCost = comparator.compareContent(fileIndexes[ver1Index], fileIndexes[ver3Index]);
-	ver23CompareCost = comparator.compareContent(fileIndexes[ver2Index], fileIndexes[ver3Index]);
+	ver12CompareCost = comparator.compareContent(fileIndexes[ver1Index], fileIndexes[ver2Index], 1.0);
+	ver13CompareCost = comparator.compareContent(fileIndexes[ver1Index], fileIndexes[ver3Index], 1.0);
+	ver23CompareCost = comparator.compareContent(fileIndexes[ver2Index], fileIndexes[ver3Index], 1.0);
 
 	if ( ver23CompareCost > 0.001 ) {
 		throw TestError("Versions 2 and 3 should have equal content");
@@ -65,9 +65,9 @@ void TestCompareFiles::run() {
 	}
 
 	// Compare full
-	ver12CompareCost = comparator.compare(fileIndexes[ver1Index], fileIndexes[ver2Index]);
-	ver13CompareCost = comparator.compare(fileIndexes[ver1Index], fileIndexes[ver3Index]);
-	ver23CompareCost = comparator.compare(fileIndexes[ver2Index], fileIndexes[ver3Index]);
+	ver12CompareCost = comparator.compare(fileIndexes[ver1Index], fileIndexes[ver2Index], 1.0);
+	ver13CompareCost = comparator.compare(fileIndexes[ver1Index], fileIndexes[ver3Index], 1.0);
+	ver23CompareCost = comparator.compare(fileIndexes[ver2Index], fileIndexes[ver3Index], 1.0);
 
 	if ( ver23CompareCost > 0.1 ) {
 		throw TestError("Versions 2 and 3 should be equal for < 10%");
@@ -80,5 +80,4 @@ void TestCompareFiles::run() {
 	if ( ver13CompareCost < 0.1 ) {
 		throw TestError("Versions 1 and 3 should be equal for > 10%");
 	}
-
 }

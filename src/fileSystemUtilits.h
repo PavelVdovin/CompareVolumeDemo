@@ -28,8 +28,9 @@ struct FileInfo {
 class FileSystemUtilits {
 public:
 
-	// Get list of files with paths
-	static list<FileInfo> getFolderFiles(const string& path);
+	// Get list of files with paths.
+	// Recursive version: append relativeFolderPath to file names
+	static list<FileInfo> getFolderFiles(const string& rootFolderPath, string relativeFolderPath = "");
 };
 
 

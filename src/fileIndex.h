@@ -26,7 +26,7 @@ public:
 	// Calculate and keep the index
 	virtual void calculate() = 0;
 
-	const FileInfo getFileInfo() const {
+	const FileInfo& getFileInfo() const {
 		return m_fileInfo;
 	}
 

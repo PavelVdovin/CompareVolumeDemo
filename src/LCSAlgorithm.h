@@ -20,22 +20,19 @@
 using namespace std;
 
 /*
- * Taking two containers A and B, find a length of the longest common subsequence.
- * Assumptions:
- * 	- A and B should have method size()
- * 	- A and B should have method at, which returns comparable elements.
+ * Taking two arrays A and B with sizes A_size and B_size, find a length of the longest common subsequence.
  */
-template<class T> int getLCSLength(const T& A, const T& B) {
+template<class T> int getLCSLength(const T* A, unsigned A_size, const T* B, unsigned B_size) {
 
 	// allocate storage for one-dimensional arrays X and Y
 	// for  storing dynamic programming intermediate results
-	vector<int> X(B.size() + 1, 0), Y(B.size() + 1, 0);
+	vector<int> X(B_size + 1, 0), Y(B_size + 1, 0);
 
-	for (int i = A.size(); i >= 0; i--) {
-		for (int j = B.size(); j >= 0; j--) {
-			if ( i == A.size() || j == B.size() ) {
+	for (int i = A_size; i >= 0; i--) {
+		for (int j = B_size; j >= 0; j--) {
+			if ( i == A_size || j == B_size ) {
 				X[j] = 0;
-			} else if ( A.at(i) == B.at(j) ) {
+			} else if ( A[i] == B[j] ) {
 				X[j] = 1 + Y[j+1];
 			} else {
 				X[j] = max(Y[j], X[j+1]);
