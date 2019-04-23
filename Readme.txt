@@ -1,7 +1,12 @@
 This is the demo program for comparing various files from the specified directory.
-Program parses the specified directory recursevly, builds file indexes, save them in lmdb database
-and searches for paired files using Longest-Common-Subsequence length based heuristic.
+Program parses the specified directory recursevly, builds file indexes, saves them in lmdb database
+and searches for paired files using Longest-Common-Subsequence (LCS) length based heuristic.
 All indexes are saved in db and only new/modified files are indexed each time.
+
+Files are compared both for metadata (file names and modification dates) and for content.
+File content index represents an array of arithmetic hashes calculated for each line of file.
+LSC length of two files are compared using effective algorithm (based on dynamic-programing approach) and the difference is calculated based on this length.
+The common difference between files is a weighted sum of metatadata difference and content difference (content is taken with higher ratio).
 
 Dependencies:
 - lmdb dev lib ('sudo apt-get install liblmdb-dev' for ubuntu)
@@ -28,8 +33,8 @@ Examples:
 Generate indexes and find all paired files in the current folder (this may take a long time):
 > ./CompareVolumeDemo .
 
-Generate indexes and find all paried files for file 'assets/test.txt' in the current folder:
-> ./CompareVolumeDemo -f assets/test.txt .
+Generate indexes and find all paried files for file 'assets/test.txt' in the folder 'folder':
+> ./CompareVolumeDemo -f assets/test.txt ./folder
 
 Generate indexes and output differences with all files with '.txt' extension for file assets/test.txt:
 > ./CompareVolumeDemo -f assets/test.txt -x 100 .
