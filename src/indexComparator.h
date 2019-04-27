@@ -24,8 +24,7 @@ public:
 	// maxDiff parameter may be used to skip comparing if files have too different sizes.
 	virtual double compareContent(
 		const FileIndexArithmetic& file1,
-		const FileIndexArithmetic& file2,
-		double maxDiff
+		const FileIndexArithmetic& file2
 	) const = 0;
 
 	// Compare metadata only.
@@ -47,6 +46,18 @@ public:
 			const FileIndexArithmetic& file2,
 			double maxDiff,
 			const double preferContentRatio = 0.9
+	) const;
+
+private:
+
+	// This method is used to compare files without
+	// line breaks to have more accurate estimation.
+	// The method is automatically called when the pair of
+	// such files are identified (their hash sizes = 1).
+	double compareContentText(
+			const FileIndexArithmetic& file1,
+			const FileIndexArithmetic& file2,
+			double maxDiff
 	) const;
 };
 

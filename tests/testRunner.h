@@ -16,6 +16,7 @@
 #include "testDB.h"
 #include "testVolumeCompare.h"
 #include "testSubfolder.h"
+#include "testOnelineFiles.h"
 
 using namespace std;
 
@@ -31,6 +32,7 @@ public:
 		m_tests.push_back(make_unique<TestDB>());
 		m_tests.push_back(make_unique<TestVolumeCompare>());
 		m_tests.push_back(make_unique<TestSubfolder>());
+		m_tests.push_back(make_unique<TestOnelineFiles>());
 	}
 
 	void run();

@@ -8,6 +8,8 @@
 #include <iostream>
 #include <string>
 #include <cassert>
+#include <cmath>
+#include <fstream>
 #include "LCSAlgorithm.h"
 #include "indexComparator.h"
 
@@ -62,7 +64,74 @@ double IndexComparator::compare(
 ) const {
 	assert( preferContentRatio > -EPS && preferContentRatio < 1.0 + EPS );
 
-	return preferContentRatio * compareContent(file1, file2, maxDiff / preferContentRatio)
-		+ (1.0 - preferContentRatio) * compareMetadata(file1, file2);
+	double contentDiff;
+	int size1 = file1.getHashSize();
+	int size2 = file2.getHashSize();
+	int maxSize = max(size1, size2);
+	double maxContentDiff = maxDiff / preferContentRatio;
+	if ( maxSize == 0 ) {
+		// No content
+		contentDiff = 0.0;
+	} else if ( (double)min(size1, size2) / maxSize < 1.0 - maxContentDiff ) {
+		// No reason to compare files
+		contentDiff = 1.0;
+	} else if ( maxSize == 1 ) {
+		// Both files have no line breaks - use LCS to compare text if hashes are not equal
+		contentDiff = compareContentText(file1, file2, maxContentDiff);
+	} else  {
+		// Compare line hashes.
+		contentDiff = compareContent(file1, file2);
+	}
+
+	double metadataDiff = compareMetadata(file1, file2);
+
+	return preferContentRatio * contentDiff
+		+ (1.0 - preferContentRatio) * metadataDiff;
+}
+
+double IndexComparator::compareContentText(
+		const FileIndexArithmetic& file1,
+		const FileIndexArithmetic& file2,
+		double maxDiff
+) const {
+	// Call only for files with one line
+	assert(file1.getHashSize() == 1 && file2.getHashSize() == 1);
+	if ( abs(file1.getHash()[0] - file2.getHash()[0]) < EPS ) {
+		// Hashes are equal
+		return 0.0;
+	}
+
+	// Read files and save content
+	string file1Content;
+	string file2Content;
+
+	std::ifstream infile1(file1.getFileInfo().path);
+	getline(infile1, file1Content);
+	infile1.close();
+
+	std::ifstream infile2(file2.getFileInfo().path);
+	getline(infile2, file2Content);
+	infile2.close();
+
+	// Compare lines length first
+	int size1 = file1Content.size();
+	int size2 = file2Content.size();
+	int maxSize = max(size1, size2);
+	if ( maxSize == 0 ) {
+		// No content
+		return 0.0;
+	} else if ( (double)min(size1, size2) / maxSize < 1.0 - maxDiff ) {
+		// No reason to compare files
+		return 1.0;
+	}
+
+	int lcsLength = getLCSLength<char>(
+		file1Content.c_str(),
+		file1Content.size(),
+		file2Content.c_str(),
+		file2Content.size()
+	);
+
+	return 1.0 - (double)lcsLength / maxSize;
 }
 

@@ -7,6 +7,7 @@ Files are compared both for metadata (file names and modification dates) and for
 File content index represents an array of arithmetic hashes calculated for each line of file.
 LSC length of two files are compared using effective algorithm (based on dynamic-programing approach) and the difference is calculated based on this length.
 The common difference between files is a weighted sum of metatadata difference and content difference (content is taken with higher ratio).
+If two files with no line breaks are compared, their content is compared "as is". LCS length is calculated and compared by the same algorithm in this case.
 
 Dependencies:
 - lmdb dev lib ('sudo apt-get install liblmdb-dev' for ubuntu)

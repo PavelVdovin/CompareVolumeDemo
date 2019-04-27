@@ -16,8 +16,7 @@ public:
 	// Compare content based on LCS algorithm.
 	virtual double compareContent(
 		const FileIndexArithmetic& file1,
-		const FileIndexArithmetic& file2,
-		double maxDiff
+		const FileIndexArithmetic& file2
 	) const override;
 };
 
